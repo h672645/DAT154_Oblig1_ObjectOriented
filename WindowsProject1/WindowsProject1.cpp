@@ -24,6 +24,10 @@ static list<Bil> vestkoe;
 static const int TIMER_LIGHTS = 1;
 static const int TIMER_BILVEST = 2;
 static const int TIMER_BILNORD = 3;
+static int pn = 0;
+static int pw = 0;
+static int MAKS_GRENSE_X = 999999;
+static int MAKS_GRENSE_Y = -999999;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -137,11 +141,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static int pn = 0;
-    static int pw = 0;
-    static int MAKS_GRENSE_X = 999999;
-    static int MAKS_GRENSE_Y = -999999;
-
     switch (message)
     {
     case WM_COMMAND:
