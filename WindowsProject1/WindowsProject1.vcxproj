@@ -133,6 +133,7 @@
     <ClInclude Include="WindowsProject1.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bil.cpp" />
     <ClCompile Include="Lyskryss.cpp" />
     <ClCompile Include="TrafikklysNord.cpp" />
     <ClCompile Include="TrafikklysVest.cpp" />

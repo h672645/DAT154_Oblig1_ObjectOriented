@@ -1,13 +1,13 @@
 #include <iostream>
 #include <Windows.h>
+#include <list>
 using namespace std;
 
 class Lyskryss {
-private:
+public:
 	int xGrense;
 	int yGrense;
 
-public:
 	Lyskryss(int xGrense, int yGrense) {
 		this->xGrense = xGrense;
 		this->yGrense = yGrense;

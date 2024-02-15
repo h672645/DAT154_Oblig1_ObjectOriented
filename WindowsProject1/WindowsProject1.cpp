@@ -6,6 +6,7 @@
 #include "Lyskryss.cpp"
 #include "TrafikklysNord.cpp"
 #include "TrafikklysVest.cpp"
+#include "Bil.cpp"
 
 #define MAX_LOADSTRING 100
 
@@ -13,6 +14,11 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+static int lyskryssverdi = 0;
+static int pn = 1;
+static int pw = 1;
+static bool nordLysRodt = false;
+static bool vestLysRodt = false;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -126,8 +132,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static int lyskryssverdi = 0;
-
     switch (message)
     {
     case WM_COMMAND:
@@ -159,21 +163,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             RECT rect;
             GetClientRect(hWnd, &rect);
 
-            lyskryssverdi = (lyskryssverdi + 1)%12;
+            lyskryssverdi = (lyskryssverdi + 1)%25;
 
             InvalidateRect(hWnd, &rect, true);
         }
        break;
     
-    case WM_LBUTTONDOWN:
+    case WM_MBUTTONDOWN:
         {
             RECT rect;
             GetClientRect(hWnd, &rect);
 
-            lyskryssverdi = (lyskryssverdi + 3) % 12;
+            lyskryssverdi = (lyskryssverdi + 10) % 25;
 
             InvalidateRect(hWnd, &rect, true);
         }
+        break;
+
+    case WM_LBUTTONDOWN:
+        pw = 2;
+        break;
+    case WM_LBUTTONUP:
+        pw = 1;
+        break;
+
+    case WM_RBUTTONDOWN:
+            pn = 2;
+        break;
+
+    case WM_RBUTTONUP:
+            pn = 1;
         break;
 
     case WM_PAINT:
@@ -186,8 +205,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             lyskryss.draw(hWnd, hdc);
             TrafikklysNord trafikklysnord(lyskryssverdi);
             TrafikklysVest trafikklysvest(lyskryssverdi);
-            trafikklysnord.draw(hWnd, hdc);
-            trafikklysvest.draw(hWnd, hdc);
+            bool* lyspointervest = &vestLysRodt;
+            bool* lyspointernord = &nordLysRodt;
+            trafikklysnord.draw(hWnd, hdc, lyspointernord);
+            trafikklysvest.draw(hWnd, hdc, lyspointervest);
+
+            POINT point = { 10,10 };
+            RECT client;
+            GetClientRect(hWnd, &client);
+            static Bil bil(client.left, client.bottom / 2 - 5);
+            static Bil bil2(client.right / 2 - 5, client.bottom -20);
+            bil.drawBilVest(hWnd ,hdc, point, vestLysRodt);
+            bil2.drawBilNord(hWnd ,hdc, point,  nordLysRodt);
 
             EndPaint(hWnd, &ps);
         }

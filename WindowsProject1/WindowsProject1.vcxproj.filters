@@ -41,6 +41,9 @@
     <ClCompile Include="TrafikklysVest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WindowsProject1.rc">

@@ -11,7 +11,7 @@ public:
 		this->teller = teller;
 	}
 
-	void draw(HWND hWnd, HDC hdc) {
+	void draw(HWND hWnd, HDC hdc, bool* vestlystRodt) {
 		HBRUSH trafikkLysNord = CreateSolidBrush(RGB(0, 0, 0));
 		HGDIOBJ hOrgBrush = SelectObject(hdc, trafikkLysNord);
 
@@ -26,17 +26,25 @@ public:
 		Rectangle(hdc, rect.right / 2 - 50, rect.bottom / 2 + 50, rect.right / 2 - 200, rect.bottom / 2 + 100);
 
 		int tilstand;
-		if (teller < 3) {
+		if (teller < 9) {
+			//GRØNN
 			tilstand = 0;
+			*vestlystRodt = false;
 		}
-		else if (teller >= 3 && teller < 6) {
+		else if (teller >= 9 && teller < 12) {
+			//GULT
 			tilstand = 1;
+			*vestlystRodt = true;
 		}
-		else if (teller >= 6 && teller < 9) {
+		else if (teller >= 12 && teller < 21) {
+			//RØDT
 			tilstand = 2;
+			*vestlystRodt = true;
 		}
 		else {
+			//RØDT + GULT
 			tilstand = 3;
+			*vestlystRodt = true;
 		}
 
 		switch (tilstand) {
