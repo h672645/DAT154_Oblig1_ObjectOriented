@@ -26,17 +26,19 @@ public:
 		HBRUSH biltegnerbrush = CreateSolidBrush(RGB(farge.red, farge.green, farge.blue));
 		HGDIOBJ hOrgBrush = SelectObject(hdc, biltegnerbrush);
 
-		RECT rect = { xPos, yPos, xPos+20, yPos + 10 };
+		RECT rect = { this->xPos, this->yPos, this->xPos+20, this->yPos + 10 };
 		FillRect(hdc, &rect, biltegnerbrush);
 
 		RECT client;
 		GetClientRect(hwnd, &client);
 		
-		if (xPos > (client.right / 2 - 90) && xPos < (client.right / 2 - 70) && trafikklys == true) {
-			xPos = xPos;
+		if (this->xPos > (client.right / 2 - 90) && this->xPos < (client.right / 2 - 70) && trafikklys == true) {
+			this->xPos = this->xPos;
 		}
-		else {
-			xPos += retning.x;
+		else if (false) {
+			//SJEKK OM BILEN FORAN KJEM HER
+		} else {
+			this->xPos += retning.x;
 		}
 
 		SelectObject(hdc, hOrgBrush);
@@ -47,17 +49,20 @@ public:
 		HBRUSH biltegnerbrush = CreateSolidBrush(RGB(farge.red, farge.green, farge.blue));
 		HGDIOBJ hOrgBrush = SelectObject(hdc, biltegnerbrush);
 
-		RECT rect = { xPos, yPos, xPos + 10, yPos +20};
+		RECT rect = { this->xPos, this->yPos, this->xPos + 10, this->yPos +20};
 		FillRect(hdc, &rect, biltegnerbrush);
 
 		RECT client;
 		GetClientRect(hwnd, &client);
 
-		if (yPos > (client.bottom / 2 + 50) && yPos < (client.bottom / 2 + 70) && trafikklys == true) {
-			yPos = yPos;
+		if (this->yPos > (client.bottom / 2 + 50) && this->yPos < (client.bottom / 2 + 70) && trafikklys == true) {
+			this->yPos = this->yPos;
+		}
+		else if (false) {
+			//SJEKK OM BILEN FORAN KJEM HER
 		}
 		else {
-			yPos -= retning.y;
+			this->yPos -= retning.y;
 		}
 		
 		SelectObject(hdc, hOrgBrush);

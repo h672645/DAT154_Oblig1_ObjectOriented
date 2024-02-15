@@ -7,6 +7,7 @@
 #include "TrafikklysNord.cpp"
 #include "TrafikklysVest.cpp"
 #include "Bil.cpp"
+#include <list>
 
 #define MAX_LOADSTRING 100
 
@@ -15,10 +16,14 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 static int lyskryssverdi = 0;
-static int pn = 1;
-static int pw = 1;
+
 static bool nordLysRodt = false;
 static bool vestLysRodt = false;
+static list<Bil> nordkoe;
+static list<Bil> vestkoe;
+static const int TIMER_LIGHTS = 1;
+static const int TIMER_BILVEST = 2;
+static const int TIMER_BILNORD = 3;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -132,6 +137,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static int pn = 1;
+    static int pw = 1;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -154,20 +162,56 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_CREATE:
         {
-            SetTimer(hWnd, 0, 1000, 0);
+            SetTimer(hWnd, TIMER_LIGHTS, 500, 0);
+            SetTimer(hWnd, TIMER_BILVEST, 1000, 0);
+            SetTimer(hWnd, TIMER_BILNORD, 1000, 0);
         }
         break;
 
     case WM_TIMER:
         {
-            RECT rect;
-            GetClientRect(hWnd, &rect);
+        
+        switch (wParam) {
 
-            lyskryssverdi = (lyskryssverdi + 1)%25;
-
-            InvalidateRect(hWnd, &rect, true);
+        case TIMER_LIGHTS:
+        {
+            RECT client;
+            GetClientRect(hWnd, &client);
+            lyskryssverdi = (lyskryssverdi + 1) % 25;
+            InvalidateRect(hWnd, &client, true);
         }
-       break;
+            break;
+
+        case TIMER_BILVEST:
+        {
+            RECT client;
+            GetClientRect(hWnd, &client);
+            int tilfeldig;
+            if (pw == 1 || pw == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
+            
+            if (tilfeldig == 1) {
+                Bil bil(client.left, client.bottom / 2 - 5);
+                vestkoe.push_back(bil);
+            }
+        }
+            break;
+
+        case TIMER_BILNORD:
+        {
+            RECT client;
+            GetClientRect(hWnd, &client);
+            int tilfeldig;
+            if (pn == 1 || pn == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
+
+            if (tilfeldig == 1) {
+                Bil bil2(client.right / 2 - 5, client.bottom - 20);
+                nordkoe.push_back(bil2);
+            }
+        }
+            break;
+        }
+        }
+        break;
     
     case WM_MBUTTONDOWN:
         {
@@ -181,19 +225,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_LBUTTONDOWN:
+    {
+        RECT rect;
+        GetClientRect(hWnd, &rect);
         pw = 2;
-        break;
+        InvalidateRect(hWnd, &rect, true);
+    }
+    break;
+
     case WM_LBUTTONUP:
+    {
+        RECT rect;
+        GetClientRect(hWnd, &rect);
         pw = 1;
-        break;
+        InvalidateRect(hWnd, &rect, true);
+    }
+    break;
 
     case WM_RBUTTONDOWN:
-            pn = 2;
-        break;
+    {
+        RECT rect;
+        GetClientRect(hWnd, &rect);
+        pn = 2;
+        InvalidateRect(hWnd, &rect, true);
+    }
+    break;
 
     case WM_RBUTTONUP:
-            pn = 1;
-        break;
+    {
+        RECT rect;
+        GetClientRect(hWnd, &rect);
+        pn = 1;
+        InvalidateRect(hWnd, &rect, true);
+    }
+    break;
 
     case WM_PAINT:
         {
@@ -211,18 +276,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             trafikklysvest.draw(hWnd, hdc, lyspointervest);
 
             POINT point = { 10,10 };
-            RECT client;
-            GetClientRect(hWnd, &client);
-            static Bil bil(client.left, client.bottom / 2 - 5);
-            static Bil bil2(client.right / 2 - 5, client.bottom -20);
-            bil.drawBilVest(hWnd ,hdc, point, vestLysRodt);
-            bil2.drawBilNord(hWnd ,hdc, point,  nordLysRodt);
+
+            for (auto& bil : vestkoe) {
+                bil.drawBilVest(hWnd, hdc, point, vestLysRodt);
+            }
+            
+            for (auto& bil : nordkoe) {
+                bil.drawBilNord(hWnd, hdc, point, nordLysRodt);
+            }
+            
 
             EndPaint(hWnd, &ps);
         }
         break;
 
     case WM_DESTROY:
+        KillTimer(hWnd, TIMER_LIGHTS);
+        KillTimer(hWnd, TIMER_BILNORD);
+        KillTimer(hWnd, TIMER_BILVEST);
         PostQuitMessage(0);
         break;
     default:
