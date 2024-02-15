@@ -137,8 +137,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static int pn = 1;
-    static int pw = 1;
+    static int pn = 0;
+    static int pw = 0;
 
     switch (message)
     {
@@ -162,53 +162,56 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_CREATE:
         {
-            SetTimer(hWnd, TIMER_LIGHTS, 500, 0);
-            SetTimer(hWnd, TIMER_BILVEST, 1000, 0);
-            SetTimer(hWnd, TIMER_BILNORD, 1000, 0);
+            SetTimer(hWnd, 0, 100, 0);
         }
         break;
 
     case WM_TIMER:
-        {
-        
-        switch (wParam) {
+    {
+        lyskryssverdi = ++lyskryssverdi % 25;
 
-        case TIMER_LIGHTS:
+        RECT client;
+        GetClientRect(hWnd, &client);
+
+        switch (pw) {
+        case -1:
         {
-            RECT client;
-            GetClientRect(hWnd, &client);
-            lyskryssverdi = (lyskryssverdi + 1) % 25;
-            InvalidateRect(hWnd, &client, true);
+            Bil bil(client.left, client.bottom / 2 - 5);
+            vestkoe.push_back(bil);
         }
             break;
 
-        case TIMER_BILVEST:
-        {
-            RECT client;
-            GetClientRect(hWnd, &client);
-            int tilfeldig = (pw == 1 || pw == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
-            
-            if (tilfeldig == 1) {
-                Bil bil(client.left, client.bottom / 2 - 5);
-                vestkoe.push_back(bil);
+        case 0:
+            break;
+
+        case 1:
+            {
+            Bil bil(client.left, client.bottom / 2 - 5);
+            vestkoe.push_back(bil);
             }
-        }
             break;
+        }
 
-        case TIMER_BILNORD:
-        {
-            RECT client;
-            GetClientRect(hWnd, &client);
-            int tilfeldig = (pn == 1 || pn == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
-
-            if (tilfeldig == 1) {
-                Bil bil2(client.right / 2 - 5, client.bottom - 20);
-                nordkoe.push_back(bil2);
+        switch (pn) {
+        case -1:
+            {
+            Bil bil2(client.right / 2 - 5, client.bottom - 20);
+            nordkoe.push_back(bil2);  
             }
-        }
+            break;
+
+        case 0:
+            break;
+
+        case 1:
+            {
+            Bil bil2(client.right / 2 - 5, client.bottom - 20);
+            nordkoe.push_back(bil2);
+            }
             break;
         }
-        }
+        InvalidateRect(hWnd, &client, true);
+    }
         break;
     
     case WM_MBUTTONDOWN:
@@ -217,27 +220,42 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
 
-    case WM_LBUTTONDOWN:
+    case WM_KEYDOWN:
     {
-        pw = 2;
+        switch (wParam) {
+        case VK_UP:
+            pn = 1;
+            break;
+        case VK_DOWN:
+            pn = -1;
+            break;
+        case VK_LEFT:
+            pw = -1;
+            break;
+        case VK_RIGHT:
+            pw = 1;
+            break;
+        }
+        
     }
     break;
 
-    case WM_LBUTTONUP:
+    case WM_KEYUP:
     {
-        pw = 1;
-    }
-    break;
-
-    case WM_RBUTTONDOWN:
-    {
-        pn = 2;
-    }
-    break;
-
-    case WM_RBUTTONUP:
-    {
-        pn = 1;
+        switch (wParam) {
+        case VK_UP:
+            pn = 0; 
+            break;
+        case VK_DOWN:
+            pn = 0; 
+            break;
+        case VK_LEFT:
+            pw = 0;
+            break;
+        case VK_RIGHT:
+            pw = 0;
+            break;
+        }
     }
     break;
 
@@ -272,9 +290,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_DESTROY:
-        KillTimer(hWnd, TIMER_LIGHTS);
-        KillTimer(hWnd, TIMER_BILNORD);
-        KillTimer(hWnd, TIMER_BILVEST);
+        KillTimer(hWnd, 0);
         PostQuitMessage(0);
         break;
     default:
