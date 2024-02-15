@@ -139,6 +139,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static int pn = 0;
     static int pw = 0;
+    static int MAKS_GRENSE_X = 999999;
+    static int MAKS_GRENSE_Y = -999999;
 
     switch (message)
     {
@@ -172,22 +174,66 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         RECT client;
         GetClientRect(hWnd, &client);
+        
+        int* pointerX;
+        int* pointerY;
 
         switch (pw) {
         case -1:
-        {
-            Bil bil(client.left, client.bottom / 2 - 5);
-            vestkoe.push_back(bil);
-        }
+            {
+            int tilfeldig = rand() % 25;
+            if (tilfeldig == 1) {
+                if (vestkoe.empty()) {
+                    
+                    Bil bil(client.left, client.bottom / 2 - 5, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    vestkoe.push_back(bil);
+                }
+                else {
+                    pointerX = &vestkoe.back().xPos;
+                    pointerY = &vestkoe.back().yPos;
+                    Bil bil(client.left, client.bottom / 2 - 5, pointerX, pointerY);
+                    vestkoe.push_back(bil);
+                }
+                
+            }
+            }
             break;
 
         case 0:
+            {
+            int tilfeldig = rand() % 20;
+            if (tilfeldig == 1) {
+                if (vestkoe.empty()) {
+
+                    Bil bil(client.left, client.bottom / 2 - 5, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    vestkoe.push_back(bil);
+                }
+                else {
+                    pointerX = &vestkoe.back().xPos;
+                    pointerY = &vestkoe.back().yPos;
+                    Bil bil(client.left, client.bottom / 2 - 5, pointerX, pointerY);
+                    vestkoe.push_back(bil);
+                }
+            }
+            }
             break;
 
         case 1:
             {
-            Bil bil(client.left, client.bottom / 2 - 5);
-            vestkoe.push_back(bil);
+            int tilfeldig = rand() % 10;
+            if (tilfeldig == 1) {
+                if (vestkoe.empty()) {
+
+                    Bil bil(client.left, client.bottom / 2 - 5, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    vestkoe.push_back(bil);
+                }
+                else {
+                    pointerX = &vestkoe.back().xPos;
+                    pointerY = &vestkoe.back().yPos;
+                    Bil bil(client.left, client.bottom / 2 - 5, pointerX, pointerY);
+                    vestkoe.push_back(bil);
+                }
+            }
             }
             break;
         }
@@ -195,18 +241,59 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (pn) {
         case -1:
             {
-            Bil bil2(client.right / 2 - 5, client.bottom - 20);
-            nordkoe.push_back(bil2);  
+            int tilfeldig = rand() % 25;
+            if (tilfeldig == 1) {
+                if (nordkoe.empty()) {
+
+                    Bil bil2(client.right / 2 - 5, client.bottom - 20, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    nordkoe.push_back(bil2);
+                }
+                else {
+                    pointerX = &nordkoe.back().xPos;
+                    pointerY = &nordkoe.back().yPos;
+                    Bil bil2(client.right / 2 - 5, client.bottom - 20, pointerX, pointerY);
+                    nordkoe.push_back(bil2);
+                }
+            }
             }
             break;
 
         case 0:
+            {
+            int tilfeldig = rand() % 20;
+            if (tilfeldig == 1) {
+                if (nordkoe.empty()) {
+
+                    Bil bil2(client.right / 2 - 5, client.bottom - 20, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    nordkoe.push_back(bil2);
+                }
+                else {
+                    pointerX = &nordkoe.back().xPos;
+                    pointerY = &nordkoe.back().yPos;
+                    Bil bil2(client.right / 2 - 5, client.bottom - 20, pointerX, pointerY);
+                    nordkoe.push_back(bil2);
+                }
+            }
+
+            }
             break;
 
         case 1:
             {
-            Bil bil2(client.right / 2 - 5, client.bottom - 20);
-            nordkoe.push_back(bil2);
+            int tilfeldig = rand() % 10;
+            if (tilfeldig == 1) {
+                if (nordkoe.empty()) {
+
+                    Bil bil2(client.right / 2 - 5, client.bottom - 20, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    nordkoe.push_back(bil2);
+                }
+                else {
+                    pointerX = &nordkoe.back().xPos;
+                    pointerY = &nordkoe.back().yPos;
+                    Bil bil2(client.right / 2 - 5, client.bottom - 20, pointerX, pointerY);
+                    nordkoe.push_back(bil2);
+                }
+            }
             }
             break;
         }

@@ -13,13 +13,17 @@ public:
 	int xPos;
 	int yPos;
 	Farge farge;
+	int* bilForanXPos;
+	int* bilForanYPos;
 
-	Bil(int xPos, int yPos) {
+	Bil(int xPos, int yPos, int* bilForanXPos, int* bilForanYPos) {
 		this->xPos = xPos;
 		this->yPos = yPos;
 		farge.red = rand() % 256;
 		farge.green = rand() % 256;
 		farge.blue = rand() % 256;
+		this->bilForanXPos = bilForanXPos;
+		this->bilForanYPos = bilForanYPos;
 	};
 
 	void drawBilVest(HWND hwnd, HDC hdc, POINT retning, bool trafikklys) {
@@ -32,11 +36,11 @@ public:
 		RECT client;
 		GetClientRect(hwnd, &client);
 		
-		if (this->xPos > (client.right / 2 - 90) && this->xPos < (client.right / 2 - 70) && trafikklys == true) {
-			this->xPos = this->xPos;
+		if (*bilForanXPos - xPos <= 40) {
+			
 		}
-		else if (false) {
-			//SJEKK OM BILEN FORAN KJEM HER
+		else if (this->xPos > (client.right / 2 - 90) && this->xPos < (client.right / 2 - 70) && trafikklys == true) {
+			
 		} else {
 			this->xPos += retning.x;
 		}
@@ -55,13 +59,12 @@ public:
 		RECT client;
 		GetClientRect(hwnd, &client);
 
-		if (this->yPos > (client.bottom / 2 + 50) && this->yPos < (client.bottom / 2 + 70) && trafikklys == true) {
-			this->yPos = this->yPos;
+		if (yPos - *bilForanYPos <= 30) {
+			
 		}
-		else if (false) {
-			//SJEKK OM BILEN FORAN KJEM HER
-		}
-		else {
+		else if (this->yPos > (client.bottom / 2 + 50) && this->yPos < (client.bottom / 2 + 70) && trafikklys == true) {
+			
+		} else {
 			this->yPos -= retning.y;
 		}
 		
