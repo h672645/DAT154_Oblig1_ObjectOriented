@@ -200,7 +200,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case 0:
             {
-            int tilfeldig = rand() % 20;
+            int tilfeldig = rand() % 15;
             if (tilfeldig == 1) {
                 if (vestkoe.empty()) {
 
@@ -219,7 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case 1:
             {
-            int tilfeldig = rand() % 10;
+            int tilfeldig = rand() % 5;
             if (tilfeldig == 1) {
                 if (vestkoe.empty()) {
 
@@ -259,7 +259,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case 0:
             {
-            int tilfeldig = rand() % 20;
+            int tilfeldig = rand() % 15;
             if (tilfeldig == 1) {
                 if (nordkoe.empty()) {
 
@@ -279,7 +279,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case 1:
             {
-            int tilfeldig = rand() % 10;
+            int tilfeldig = rand() % 5;
             if (tilfeldig == 1) {
                 if (nordkoe.empty()) {
 
