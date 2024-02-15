@@ -259,17 +259,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         case 0:
             {
+            //Standard-rate for bil-spawning
             int tilfeldig = rand() % 15;
             if (tilfeldig == 1) {
+
+                
+                
+                //Sjekke om den nordgående-listen er tom.
                 if (nordkoe.empty()) {
 
+                    //Lager en nord-gående Bil med MAKSGRENSER langt utenfor vinduet så sammenligning fremdeles er mulig.
                     Bil bil2(client.right / 2 - 5, client.bottom - 20, &MAKS_GRENSE_X, &MAKS_GRENSE_Y);
+                    //Legger bilen BAKERST i listen.
                     nordkoe.push_back(bil2);
                 }
+                
+                
+                
+                
+                //Viss listen ikke er tom
                 else {
+                    //Henter lager til pointere ved å hente bakerste bil sine koordinater
                     pointerX = &nordkoe.back().xPos;
                     pointerY = &nordkoe.back().yPos;
+                    
+                    //Lager ny Øst-gående Bil med pointere(KUN EN ER RELEVANT FOR SØR-NORD BEVEGELSE) til Bilen som kom før den i listen.
                     Bil bil2(client.right / 2 - 5, client.bottom - 20, pointerX, pointerY);
+                    //Legger bilen BAKERST i listen.
                     nordkoe.push_back(bil2);
                 }
             }
