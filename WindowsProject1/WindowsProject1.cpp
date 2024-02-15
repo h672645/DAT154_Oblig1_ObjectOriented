@@ -186,8 +186,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             RECT client;
             GetClientRect(hWnd, &client);
-            int tilfeldig;
-            if (pw == 1 || pw == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
+            int tilfeldig = (pw == 1 || pw == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
             
             if (tilfeldig == 1) {
                 Bil bil(client.left, client.bottom / 2 - 5);
@@ -200,8 +199,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             RECT client;
             GetClientRect(hWnd, &client);
-            int tilfeldig;
-            if (pn == 1 || pn == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
+            int tilfeldig = (pn == 1 || pn == 2 ? tilfeldig = rand() % 10 : tilfeldig = 1);
 
             if (tilfeldig == 1) {
                 Bil bil2(client.right / 2 - 5, client.bottom - 20);
@@ -215,48 +213,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     
     case WM_MBUTTONDOWN:
         {
-            RECT rect;
-            GetClientRect(hWnd, &rect);
-
             lyskryssverdi = (lyskryssverdi + 10) % 25;
-
-            InvalidateRect(hWnd, &rect, true);
         }
         break;
 
     case WM_LBUTTONDOWN:
     {
-        RECT rect;
-        GetClientRect(hWnd, &rect);
         pw = 2;
-        InvalidateRect(hWnd, &rect, true);
     }
     break;
 
     case WM_LBUTTONUP:
     {
-        RECT rect;
-        GetClientRect(hWnd, &rect);
         pw = 1;
-        InvalidateRect(hWnd, &rect, true);
     }
     break;
 
     case WM_RBUTTONDOWN:
     {
-        RECT rect;
-        GetClientRect(hWnd, &rect);
         pn = 2;
-        InvalidateRect(hWnd, &rect, true);
     }
     break;
 
     case WM_RBUTTONUP:
     {
-        RECT rect;
-        GetClientRect(hWnd, &rect);
         pn = 1;
-        InvalidateRect(hWnd, &rect, true);
     }
     break;
 
